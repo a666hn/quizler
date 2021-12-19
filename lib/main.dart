@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quizler/styles/text_style.dart';
 import 'quiz_brain.dart';
@@ -38,42 +37,28 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Widget> scoreKeeper = [];
 
-  void _handleIncreaseIndexQuestionList() {
+  void checkAnswer(bool userPickedAnswer) {
+    bool correctAnswer = quizBrain.getQuestionAnswer();
+
     setState(() {
+      if (userPickedAnswer == correctAnswer) {
+        scoreKeeper.add(
+          const Icon(
+            Icons.check,
+            color: Colors.green,
+          ),
+        );
+      } else {
+        scoreKeeper.add(
+          const Icon(
+            Icons.close,
+            color: Colors.red,
+          ),
+        );
+      }
+
       quizBrain.getNextQuestion();
     });
-  }
-
-  void _handleTrue() {
-    bool correctAnswer = quizBrain.getQuestionAnswer();
-
-    if (correctAnswer == true) {
-      if (kDebugMode) {
-        print('User got right answer');
-      }
-    } else {
-      if (kDebugMode) {
-        print('User got wrong answer');
-      }
-    }
-
-    _handleIncreaseIndexQuestionList();
-  }
-
-  void _handleFalse() {
-    bool correctAnswer = quizBrain.getQuestionAnswer();
-
-    if (correctAnswer == false) {
-      if (kDebugMode) {
-        print('User got right answer');
-      }
-    } else {
-      if (kDebugMode) {
-        print('User got wrong answer');
-      }
-    }
-
-    _handleIncreaseIndexQuestionList();
   }
 
   @override
@@ -101,7 +86,7 @@ class _QuizPageState extends State<QuizPage> {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: TextButton(
-              onPressed: _handleTrue,
+              onPressed: () => checkAnswer(true),
               child: Text(
                 'True',
                 style: heeboFontStyle(fontSize: 20.0),
@@ -116,7 +101,7 @@ class _QuizPageState extends State<QuizPage> {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: TextButton(
-              onPressed: _handleFalse,
+              onPressed: () => checkAnswer(false),
               child: Text(
                 'False',
                 style: heeboFontStyle(fontSize: 20.0),
