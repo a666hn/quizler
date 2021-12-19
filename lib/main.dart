@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quizler/styles/text_style.dart';
-import 'question.dart';
+import 'quiz_brain.dart';
+
+QuizBrain quizBrain = QuizBrain();
 
 void main() => runApp(
       const QuizzlerApp(),
@@ -36,29 +38,14 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Widget> scoreKeeper = [];
 
-  final List<Question> _listQuestion = [
-    Question(q: 'You can lead a cow down stairs but not to upstairs', a: false),
-    Question(
-      q: 'Approximately one quarter of human bones are inthe feet',
-      a: true,
-    ),
-    Question(q: 'A slug\'s blood is green', a: true),
-  ];
-
-  int _questionNumber = 0;
-
   void _handleIncreaseIndexQuestionList() {
     setState(() {
-      if (_questionNumber == (_listQuestion.length - 1)) {
-        _questionNumber = 0;
-      } else {
-        _questionNumber++;
-      }
+      quizBrain.getNextQuestion();
     });
   }
 
   void _handleTrue() {
-    bool correctAnswer = _listQuestion[_questionNumber].questionAnswer;
+    bool correctAnswer = quizBrain.getQuestionAnswer();
 
     if (correctAnswer == true) {
       if (kDebugMode) {
@@ -74,7 +61,7 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void _handleFalse() {
-    bool correctAnswer = _listQuestion[_questionNumber].questionAnswer;
+    bool correctAnswer = quizBrain.getQuestionAnswer();
 
     if (correctAnswer == false) {
       if (kDebugMode) {
@@ -101,7 +88,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                _listQuestion[_questionNumber].questionText,
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: heeboFontStyle(
                   fontSize: 25.0,
