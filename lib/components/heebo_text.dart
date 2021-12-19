@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class HeeboText extends StatelessWidget {
-  const HeeboText(this.text, {Key? key, this.color, this.shades})
+  const HeeboText(this.text, {Key? key, this.color, this.fontSize})
       : super(key: key);
 
   final String text;
   final Color? color;
-  final int? shades;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
