@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quizler/styles/text_style.dart';
 import 'quiz_brain.dart';
+import 'alert.dart';
 
 QuizBrain quizBrain = QuizBrain();
 
@@ -37,27 +38,38 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Widget> scoreKeeper = [];
 
+  void _resetQuiz() {
+    scoreKeeper = [];
+    quizBrain.resetQuiz();
+  }
+
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getQuestionAnswer();
+    QuizlerAlert _alert = QuizlerAlert();
 
     setState(() {
-      if (userPickedAnswer == correctAnswer) {
-        scoreKeeper.add(
-          const Icon(
-            Icons.check,
-            color: Colors.green,
-          ),
-        );
-      } else {
-        scoreKeeper.add(
-          const Icon(
-            Icons.close,
-            color: Colors.red,
-          ),
-        );
-      }
+      if (!quizBrain.checkQuestionFinish()) {
+        if (userPickedAnswer == correctAnswer) {
+          scoreKeeper.add(
+            const Icon(
+              Icons.check,
+              color: Colors.green,
+            ),
+          );
+        } else {
+          scoreKeeper.add(
+            const Icon(
+              Icons.close,
+              color: Colors.red,
+            ),
+          );
+        }
 
-      quizBrain.getNextQuestion();
+        quizBrain.getNextQuestion();
+      } else {
+        _alert.showAlert(context, 'Quiz is finish. Please reset the quiz');
+        _resetQuiz();
+      }
     });
   }
 

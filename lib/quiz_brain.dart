@@ -48,4 +48,12 @@ class QuizBrain {
   int getTotalQuestion() {
     return _questionsBank.length - 1;
   }
+
+  bool checkQuestionFinish() {
+    return _questionNumber == (_questionsBank.length - 1);
+  }
+
+  void resetQuiz() {
+    _questionNumber = 0;
+  }
 }
